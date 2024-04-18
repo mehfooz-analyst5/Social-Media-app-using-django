@@ -22,6 +22,27 @@
                 
             </div>
         </div>
+
+
+        <div class='row my-5'>
+            {% for post in posts %}
+                <div class='col-md-6'>
+                    <div class="card mb-3">
+                        <img src="{{ post.image.url }}" class="card-img-top" alt="Image">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ post.title }}</h5>    
+                            <p class="card-text">{{ post.caption }}</p>
+                            <a href="#" class="btn btn-primary">Like</a>
+                            <a href="#" class="btn btn-secondary">Comment</a>
+                            <a href="#" class="btn btn-info">Share</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        
+     
+
     </div>
 
 
