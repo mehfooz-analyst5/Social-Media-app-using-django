@@ -12,8 +12,9 @@ from posts.models import Post
 
 def index(request):
     current_user = request.user
+    profile = Profile.objects.get(user=current_user)
     posts = Post.objects.filter(author=current_user)
-    return render(request, 'users/index.html', {'posts': posts})
+    return render(request, 'users/index.html', {'posts': posts, 'profile': profile})
      
 
 def user_login(request):
@@ -29,9 +30,9 @@ def user_login(request):
                 user = authenticate(username=username, password=password)
                 if user is not None:
                     login(request, user)
-                    return HttpResponse('User authenticated and logged in')
+                    return redirect('index')
                 else:
-                    return HttpResponse('Iinvalid login')
+                    return redirect('login')
                 
         else:
             form = LoginForm()
@@ -47,7 +48,7 @@ def user_register(request):
             new_user.set_password(form.cleaned_data['password'])
             new_user.save()
             Profile.objects.create(user=new_user)
-            return redirect('login')
+            return redirect('index')
     else:
         form = UserRegistrationForm()
 
@@ -56,7 +57,7 @@ def user_register(request):
 
 def user_logout(request):
     logout(request)
-    return HttpResponse('User logged out')
+    return redirect('login')
 
 
 
