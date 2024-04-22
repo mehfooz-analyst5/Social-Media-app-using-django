@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post
+from .models import Post, Comment
 
 # Register your models here.
 
@@ -15,3 +15,5 @@ class PostAdmin(admin.ModelAdmin):
     ordering = ['created']
 
 admin.site.register(Post, PostAdmin)
+
+admin.site.register(Comment)

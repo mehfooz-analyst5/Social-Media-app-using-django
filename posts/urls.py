@@ -6,10 +6,10 @@ from users import views
 
 urlpatterns = [
    
-    path("create/", views.post_creation, name="post_creation"),
+    path("create", views.post_creation, name="post_creation"),
 
-    path("feed/", views.feed, name="feed"),
-    path("liked-post/<int:post_id>/", views.like_post, name="liked-post"),
+    path("feed", views.feed, name="feed"),
+    path("like", views.like_post, name="like"),
   
 
 ]

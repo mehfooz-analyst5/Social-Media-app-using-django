@@ -32,16 +32,16 @@ def index(request):
     return render(request, 'users/index.html', {'posts': posts, 'profile': profile})
 
 def feed(request):
+    logged_user = request.user
     profile = Profile.objects.all()
     posts = Post.objects.all().order_by('-last_updated_date')
 
-    return render(request, 'users/feed.html', {'posts': posts, 'profile': profile})
+    return render(request, 'users/feed.html', {'posts': posts, 'profile': profile, 'logged_user' : logged_user})
     
 
 def like_post(request):
     post_id = request.POST.get('post_id')
     post = get_object_or_404(Post, id=post_id)
-
     if post.liked_by.filter(id=request.user.id).exists():
         post.liked_by.remove(request.user)
     else:
@@ -91,10 +91,6 @@ def user_register(request):
 def user_logout(request):
     logout(request)
     return redirect('login')
-
-
-
-
 
 
 @login_required
