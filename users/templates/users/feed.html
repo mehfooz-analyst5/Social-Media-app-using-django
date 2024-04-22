@@ -13,7 +13,7 @@
     <div class="container my-14">
 
         <div class="flex justify-center ">
-            <h1 class="text-3xl font-normal mb-2 text-gray-600">My Post</h1>
+            <h1 class="text-3xl font-normal mb-2 text-gray-600">Recent Feed Post</h1>
         </div>
 
         {% for post in posts %}
@@ -25,7 +25,7 @@
                         <div class="rounded overflow-hidden w-[470px] h-[470px] bg-white shadow-lg">
 
                             <div class="user-container flex mx-5 my-5">
-                                <img class="rounded-full w-14 h-14" src="{{ profile.photo.url }}" alt="">
+                                <img class="rounded-full w-14 h-14" src="{{ post.author.profile.photo.url }}" alt="">
                                 <div class="mx-2 my-2 font-bold text-lg"><span class="text-indigo-500">{{post.author.username}}</span>
                                 
                                 </div>
@@ -37,7 +37,11 @@
 
                             <div class="px-6 py-4">
                                 <div class="icon-container flex gap-5">
-                                    <img class="w-6 h-6" src="{% static 'users/images/h3.png' %}" alt="">
+
+                                    <a id="{{ post.id }}" class="btn-like">
+                                        <img class="w-6 h-6" src="{% static 'users/images/h3.png' %}" alt="">
+                                    </a>
+
                                     <img class="w-6 h-6" src="{% static 'users/images/c2.png' %}" alt="">
                                     <img class="w-6 h-6" src="{% static 'users/images/sh1.png' %}" alt="">
                                 </div>
@@ -70,5 +74,32 @@
 {% endblock content %}
 
 {% block scripts %}
+
+    <script>
+
+        $(document).on('click', '.btn-like', function(){
+            var postId = $(this).data('post-id');
+            console.log('Post liked and number is: ', postId);
+        
+            $.ajax({
+                type: 'POST',
+                url: `/posts/liked-post/${postId}/`,  // Include the postId in the URL
+                data: {
+                    csrfmiddlewaretoken: window.CSRF_TOKEN
+                },
+                success: function(response){
+                    console.log(response);
+                    // Optionally, update the UI to reflect the like/unlike action
+                },
+                error: function(error){
+                    console.log(error);
+                }
+            });
+        });
+        
+        
+    </script>
+
+   
     
-{% endblock scripts %}
+{% endblock scripts %} 

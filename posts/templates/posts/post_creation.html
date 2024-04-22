@@ -9,23 +9,40 @@
 
 {% block content %}
 
-    <div class='container my-5'>
-        <div class='row'>
 
-            <h1>New Post Form</h1>
+<div class="container m-12">
 
-            <form method='post' enctype="multipart/form-data">
-                {% csrf_token %}
-                
-                {{form.as_p}}
-
-                <button type='submit' class='btn btn-primary'>Save</button>
+    <h1 class="text-2xl font-semibold" > 📸 Post Creation</h1>
 
 
-            </form>
+    <form method="post" enctype="multipart/form-data" class="space-y-4">
+        {% csrf_token %}
+
+        <div class="mb-2">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Title </label>
+            <div class="shadow text-gray-700 appearance-none border rounded py-2 px-3">{{form.title}}</div>
         </div>
-    </div>
 
+        <div class="mb-2">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Name</label>
+            <div class="shadow text-gray-700 appearance-none border rounded py-2 px-3">{{form.caption}}</div>
+        </div>
+
+
+        <!-- Profile Photo -->
+        <div class="mb-2">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Photo</label>
+            <div class="shadow text-gray-700 appearance-none border rounded py-2 px-3">{{form.image}}</div>
+        </div>
+
+       
+        <button type='submit' class='text-white bg-green-500 px-4 py-2 my-3 font-bold'>Save</button>
+    
+    </form>
+
+</div>
+
+   
 
 
 {% endblock content %}

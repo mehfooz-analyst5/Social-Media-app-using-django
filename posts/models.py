@@ -13,6 +13,7 @@ class Post(models.Model):
     slug = models.SlugField(max_length=255, unique=True, blank=True)
     image = models.ImageField(upload_to='images/%y/%m/%d', blank=True)
     caption = models.TextField()
+    liked_by = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='liked_posts', blank=True)
 
     created = models.DateTimeField(auto_now_add=True)
     last_updated_date = models.DateTimeField(auto_now=True)

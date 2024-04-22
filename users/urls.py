@@ -5,6 +5,8 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path("", views.index, name="index"),
+    # path("feed/", views.feed, name="feed"),
+    # path("like-post/<int:post_id>/", views.like_post, name="like-post"),
     
     path("login/", views.user_login, name="login"),
     path("logout/", views.user_logout, name="logout"),

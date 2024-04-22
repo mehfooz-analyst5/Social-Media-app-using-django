@@ -1,21 +1,54 @@
-from django.shortcuts import redirect, render, HttpResponse
+from django.shortcuts import get_object_or_404, redirect, render, HttpResponse
 from .forms import LoginForm, UserRegistrationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .models import Profile
 from .forms import UserEditForm, ProfileEditForm
 from posts.models import Post
+from posts.forms import PostCreationForm
 
 # Create your views here.
 
 
 
+@login_required
+def post_creation(request):
+    if request.method == 'POST':
+        form = PostCreationForm(data=request.POST, files=request.FILES)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
+            return redirect('index')
+    else:
+        form = PostCreationForm(data = request.GET)
+    return render(request, 'posts/post_creation.html', {'form': form})
+
+
 def index(request):
     current_user = request.user
     profile = Profile.objects.get(user=current_user)
-    posts = Post.objects.filter(author=current_user)
+    posts = Post.objects.filter(author=current_user).order_by('-last_updated_date')
     return render(request, 'users/index.html', {'posts': posts, 'profile': profile})
-     
+
+def feed(request):
+    profile = Profile.objects.all()
+    posts = Post.objects.all().order_by('-last_updated_date')
+
+    return render(request, 'users/feed.html', {'posts': posts, 'profile': profile})
+    
+
+def like_post(request):
+    post_id = request.POST.get('post_id')
+    post = get_object_or_404(Post, id=post_id)
+
+    if post.liked_by.filter(id=request.user.id).exists():
+        post.liked_by.remove(request.user)
+    else:
+        post.liked_by.add(request.user)
+
+    return redirect('feed')
+
 
 def user_login(request):
     if request.user.is_authenticated:
